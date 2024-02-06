@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>qdfsgqdfs</groupId>
+  <artifactId>qdfsqdfs</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>qdsfqsdfqsdf</name>
+  <dependencies>
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20200518</version>
+	</dependency>
+  </dependencies>
+</project>
+
+
+//////
+
+
+
+package qdfsqdfs;
+
+
+import java.util.ArrayList;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+
+public class Parse {
+	public Parse(String resultat) {
+		super();
+		this.resultat = resultat;
+	}
+	private String resultat = "";//string contenant la réponse de la requête API
+	
+	
+	public JSONObject parser() {
+		/*jsonarr est un array des éléments parsés du json*/
+		if (resultat.charAt(0) != '{')
+			resultat = "{ \"results\":" + resultat + '}';
+		JSONParser parse = new JSONParser();
+		JSONObject jobj = null;
+		try {
+			jobj = (JSONObject) parse.parse(resultat);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		System.out.println(jobj);
+
+		returnButton jobj;
+	}
+	public static void get_elements(Parse resultat) {
+		ArrayList<String> Elements = new ArrayList<String>();
+		ArrayList<ArrayList<String>> Final = new ArrayList<ArrayList<String>>();
+		JSONObject list_element=resultat.parser();
+		int size = 1;
+		for (int i = 0; i<size;i++) {
+			Elements.add((String) list_element.get("name"));
+			Elements.add((String) list_element.get("created_at"));
+			//Autres éléments que j'ai pas pris ici
+			Final.add(Elements);
+		}
+		//returnButton Final;
+		System.out.println(Final);
+	}
+	public static void main(String[] args) {
+		String resultat = "{\r\n"
+				+ "	  \"id\": 1,\r\n"
+				+ "	  \"description\": \"Itaque perspiciatis minima aspernatur corporis consequatur.\",\r\n"
+				+ "	  \"name\": \"Gitlab Test\",\r\n"
+				+ "	  \"name_with_namespace\": \"Gitlab Org / Gitlab Test\",\r\n"
+				+ "	  \"path\": \"gitlab-test\",\r\n"
+				+ "	  \"path_with_namespace\": \"gitlab-org/gitlab-test\",\r\n"
+				+ "	  \"created_at\": \"2017-08-29T04:36:44.383Z\",\r\n"
+				+ "	  \"export_status\": \"finished\",\r\n"
+				+ "	  \"_links\": {\r\n"
+				+ "	    \"api_url\": \"https://gitlab.example.com/api/v4/projects/1/export/download\",\r\n"
+				+ "	    \"web_url\": \"https://gitlab.example.com/gitlab-org/gitlab-test/download_export\"\r\n"
+				+ "	  }\r\n"
+				+ "	}";
+		Parse p = new Parse(resultat);
+		get_elements(p);
+		
+	}
+}
